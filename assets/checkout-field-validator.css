@@ -1,0 +1,16 @@
+#billing_email {
+  transition: border 0.3s ease;
+}
+
+.woocommerce form .form-row span.form-error {
+  font-size: 0.9em;
+  color: #d9534f;
+}
+
+p.woocommerce-invalid-email span.form-error__invalid-email,
+p.woocommerce-invalid-phone span.form-error__invalid-phone,
+p.woocommerce-invalid-postcode span.form-error__invalid-postcode,
+p.woocommerce-invalid-invalid-address span.form-error__invalid-invalid-address,
+p.woocommerce-invalid-required-field span.form-error__invalid-required {
+  display: block !important;
+}
