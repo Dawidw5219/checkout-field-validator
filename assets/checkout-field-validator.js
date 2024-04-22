@@ -13,7 +13,6 @@ jQuery(function ($) {
     validate_field: function (e) {
       var $this = $(this),
         $parent = $this.closest(".form-row"),
-        //validated = true,
         pattern = "";
 
       $parent.removeClass(
@@ -29,15 +28,16 @@ jQuery(function ($) {
         pattern = new RegExp(
           /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(\\[\x01-\x09\x0c-\x7f]|\[\x01-\x09\x0c-\x7f])*")@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-z0-9-]+\.)+[a-z]{2,}))$/
         );
-        if (!pattern.test($this.val())) {
+        if (!pattern.test($this.val().trim())) {
           $parent.addClass("woocommerce-invalid woocommerce-invalid-email");
           return $parent.removeClass("woocommerce-validated");
         }
       }
 
       if ($parent.hasClass("validate-phone")) {
-        pattern = new RegExp(/^[\s\#0-9_\-\+\/\(\)\.]+$/);
-        if (!pattern.test($this.val())) {
+        pattern = new RegExp(/^(?:\+48\s?)?(\d{3}[-\s]?){2}\d{3}$/);
+        console.log($this.val());
+        if (!pattern.test($this.val().trim())) {
           $parent.addClass("woocommerce-invalid woocommerce-invalid-phone");
           return $parent.removeClass("woocommerce-validated");
         }
@@ -53,8 +53,7 @@ jQuery(function ($) {
 
       if ($parent.is("#billing_city_field") || $parent.is("#billing_city_field")) {
         pattern = RegExp(/^[^\d]*$/);
-        console.log($this.val());
-        if (!pattern.test($this.val())) {
+        if (!pattern.test($this.val().trim())) {
           $parent.addClass("woocommerce-invalid woocommerce-invalid-city");
           return $parent.removeClass("woocommerce-validated");
         }
@@ -63,7 +62,7 @@ jQuery(function ($) {
       if ($parent.is("#billing_address_1_field") || $parent.is("#shipping_address_1")) {
         pattern = RegExp(/[^\d\n] \d/);
         console.log($this.val());
-        if (!pattern.test($this.val())) {
+        if (!pattern.test($this.val().trim())) {
           $parent.addClass("woocommerce-invalid woocommerce-invalid-address");
           return $parent.removeClass("woocommerce-validated");
         }
