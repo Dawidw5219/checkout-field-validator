@@ -10,8 +10,8 @@ fi
 
 VERSION=$(node -pe "require('./package.json').version")
 TAG_NAME="v$VERSION"
-RELEASE_TITLE="Release $TAG_NAME"
-RELEASE_NOTES="Release notes for version $TAG_NAME"
+RELEASE_TITLE="$TAG_NAME"
+RELEASE_NOTES="Pobierz plik checkout-field-validator.zip i zainstaluj go jako wtyczka na swojej stronie WordPress. Wersja: $TAG_NAME"
 
 ZIP_FILE="./dist/checkout-field-validator.zip"
 if [ ! -f "$ZIP_FILE" ]; then
