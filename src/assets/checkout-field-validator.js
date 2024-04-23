@@ -19,12 +19,17 @@ jQuery(function ($) {
         "woocommerce-validated woocommerce-invalid-required woocommerce-invalid-email woocommerce-invalid-phone woocommerce-invalid-postcode woocommerce-invalid-city woocommerce-invalid-address"
       );
 
-      if ($parent.hasClass("validate-required") && $this.val() === "") {
+      if ($parent.hasClass("validate-required") && $this.val() === "" && !$parent.hasClass("validate-email")) {
         $parent.addClass("woocommerce-invalid woocommerce-invalid-required");
         return $parent.removeClass("woocommerce-validated");
       }
 
-      if ($parent.hasClass("validate-email")) {
+      if (
+        ($parent.is("#billing_email_field") ||
+          $parent.is("#shipping_email_field") ||
+          $parent.hasClass("validate-email")) &&
+        $this.val() != ""
+      ) {
         pattern = new RegExp(
           /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(\\[\x01-\x09\x0c-\x7f]|\[\x01-\x09\x0c-\x7f])*")@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-z0-9-]+\.)+[a-z]{2,}))$/
         );
@@ -34,7 +39,11 @@ jQuery(function ($) {
         }
       }
 
-      if ($parent.hasClass("validate-phone")) {
+      if (
+        $parent.is("#billing_phone_field") ||
+        $parent.is("#shipping_phone_field") ||
+        $parent.hasClass("validate-phone")
+      ) {
         pattern = new RegExp(/^(?:\+48\s?)?(\d{3}[-\s]?){2}\d{3}$/);
         console.log($this.val());
         if (!pattern.test($this.val().trim())) {
@@ -43,7 +52,7 @@ jQuery(function ($) {
         }
       }
 
-      if ($parent.is("#billing_postcode") || $parent.is("#shipping_postcode")) {
+      if ($parent.is("#billing_postcode_field") || $parent.is("#shipping_postcode_field")) {
         pattern = new RegExp(/^\d{2}-?\d{3}$/);
         if (!pattern.test($this.val().trim())) {
           $parent.addClass("woocommerce-invalid woocommerce-invalid-postcode");
@@ -51,7 +60,7 @@ jQuery(function ($) {
         }
       }
 
-      if ($parent.is("#billing_city_field") || $parent.is("#billing_city_field")) {
+      if ($parent.is("#billing_city_field") || $parent.is("#shipping_city_field")) {
         pattern = RegExp(/^[^\d]*$/);
         if (!pattern.test($this.val().trim())) {
           $parent.addClass("woocommerce-invalid woocommerce-invalid-city");
@@ -59,7 +68,7 @@ jQuery(function ($) {
         }
       }
 
-      if ($parent.is("#billing_address_1_field") || $parent.is("#shipping_address_1")) {
+      if ($parent.is("#billing_address_1_field") || $parent.is("#shipping_address_1_field")) {
         pattern = RegExp(/[^\d\n] \d/);
         console.log($this.val());
         if (!pattern.test($this.val().trim())) {
