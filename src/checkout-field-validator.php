@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Checkout Field Validator
  * Description: Checkout Field Validator
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Dawid Wiewiórski
  * Author URI:  https://app4you.dev
  * License: GPLv2 or later
@@ -28,6 +28,9 @@ function checkout_field_validator_scripts()
 	wp_enqueue_style('custom-wc-email-validation-style', plugin_dir_url(__FILE__) . 'assets/checkout-field-validator.css');
 }
 
+/*
+	Stworzenie tekstu błędów na stronie zamówienia
+*/
 add_filter('woocommerce_form_field', 'checkout_field_validator_error_message', 10, 4);
 function checkout_field_validator_error_message($field, $key, $args, $value)
 {
@@ -55,8 +58,6 @@ function checkout_field_validator_error_message($field, $key, $args, $value)
 		}
 	}
 
-
-
 	if ($key === 'billing_postcode' || $key === 'shipping_postcode') {
 		$str_pos = strpos($field, '</p>');
 		if ($str_pos !== false) {
@@ -83,11 +84,52 @@ function checkout_field_validator_error_message($field, $key, $args, $value)
 	return $field;
 }
 
-
-add_action('woocommerce_checkout_process', 'checkout_field_validator_default_email');
-function checkout_field_validator_default_email()
+/*
+	Ustawienie domyślnego adres e-mail
+*/
+function checkout_field_validator_enforce_default_email()
 {
-	if (isset($_POST['billing_email']) && empty($_POST['billing_email'])) {
-		$_POST['billing_email'] = 'kontakt.fishhunter@gmail.com';
+	if (empty($_POST['billing_email'])) {
+		$_POST['billing_email'] = get_option('checkout_field_validator_default_email', 'example@example.com');
 	}
 }
+add_action('woocommerce_checkout_process', 'checkout_field_validator_enforce_default_email');
+
+/*
+	Strona Ustawień
+*/
+function checkout_field_validator_register_settings()
+{
+	add_option('checkout_field_validator_default_email', 'example@example.com');
+	register_setting('checkout_field_validator_options', 'checkout_field_validator_default_email');
+	add_settings_section('email_config', 'Zamówienia WooCommerce', 'checkout_field_validator_section_cb', 'checkout_field_validator');
+	add_settings_field('default_email', 'Domyślny adres e-mail', 'checkout_field_validator_field_cb', 'checkout_field_validator', 'email_config');
+}
+add_action('admin_init', 'checkout_field_validator_register_settings');
+
+function checkout_field_validator_register_submenu()
+{
+	add_submenu_page('woocommerce', 'Checkout Field Validator', 'Checkout Field Validator', 'manage_options', 'checkout_field_validator', 'checkout_field_validator_page_cb');
+}
+add_action('admin_menu', 'checkout_field_validator_register_submenu');
+
+function checkout_field_validator_page_cb()
+{
+	echo '<div class="wrap"><h1>Checkout Field Validator</h1><form method="post" action="options.php">';
+	settings_fields('checkout_field_validator_options');
+	do_settings_sections('checkout_field_validator');
+	submit_button(__('Save Changes'));
+
+}
+
+function checkout_field_validator_section_cb()
+{
+	echo '<p>Wprowadź domyślny adres email dla zamówień bez podanego adresu email.</p>';
+}
+
+function checkout_field_validator_field_cb()
+{
+	$email = get_option('checkout_field_validator_default_email');
+	echo "<input type='email' required='required' name='checkout_field_validator_default_email' value='" . esc_attr($email) . "' />";
+}
+
