@@ -3,7 +3,7 @@
  * Plugin Name: Checkout Field Validator
  * Description: Checkout Field Validator
  * Version: 1.0.0
- * Author: Dawid Wiewiórskifg2
+ * Author: Dawid Wiewiórski
  * Author URI:  https://app4you.dev
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
