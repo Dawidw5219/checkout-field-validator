@@ -3,6 +3,11 @@ if ! command -v gh &> /dev/null; then
     exit 1
 fi
 
+if ! gh auth status &> /dev/null; then
+    echo "GitHub CLI is not authenticated. Please run 'gh auth login' to authenticate."
+    exit 1
+fi
+
 VERSION=$(node -pe "require('./package.json').version")
 TAG_NAME="v$VERSION"
 RELEASE_TITLE="Release $TAG_NAME"
