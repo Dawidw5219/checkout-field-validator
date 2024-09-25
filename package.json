@@ -1,12 +1,12 @@
 {
   "name": "checkout-field-validator",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "license": "GPL-2.0-or-later",
   "scripts": {
     "git": "git add . && git commit -m 'update' && git push origin main",
     "build": "grunt build",
     "dev": "grunt --output='/Users/dawid/Local Sites/checkout-field-validator/app/public/wp-content/plugins/'",
-    "deploy": "yarn build && sh ./github-release.sh && yarn git"
+    "deploy": "pnpm run build && sh ./github-release.sh && pnpm run git"
   },
   "devDependencies": {
     "grunt": "^1.6.1",

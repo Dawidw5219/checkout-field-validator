@@ -8,6 +8,7 @@ jQuery(function ($) {
 
     init: function () {
       this.$checkout_form.on("input validate change blur", ".input-text, select, input:checkbox", this.validate_field);
+      this.$checkout_form.on("submit", this.validate_terms);
     },
 
     validate_field: function (e) {
@@ -45,7 +46,6 @@ jQuery(function ($) {
         $parent.hasClass("validate-phone")
       ) {
         pattern = new RegExp(/^(?:\+48\s?)?(\d{3}[-\s]?){2}\d{3}$/);
-        console.log($this.val());
         if (!pattern.test($this.val().trim())) {
           $parent.addClass("woocommerce-invalid woocommerce-invalid-phone");
           return $parent.removeClass("woocommerce-validated");
@@ -70,7 +70,6 @@ jQuery(function ($) {
 
       if ($parent.is("#billing_address_1_field") || $parent.is("#shipping_address_1_field")) {
         pattern = RegExp(/[^\d\n] \d/);
-        console.log($this.val());
         if (!pattern.test($this.val().trim())) {
           $parent.addClass("woocommerce-invalid woocommerce-invalid-address");
           return $parent.removeClass("woocommerce-validated");
@@ -78,6 +77,16 @@ jQuery(function ($) {
       }
 
       $parent.addClass("woocommerce-validated");
+    },
+
+    validate_terms: function (e) {
+      if (!$("#terms").is(":checked")) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        alert("Musisz zaakceptować regulamin, aby złożyć zamówienie");
+        return false;
+      }
     },
   };
 
