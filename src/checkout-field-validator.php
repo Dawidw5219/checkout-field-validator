@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Checkout Field Validator
  * Description: Checkout Field Validator
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Dawid Wiewiórski
  * Author URI:  https://app4you.dev
  * License: GPLv2 or later
@@ -86,7 +86,7 @@ function checkout_field_validator_error_message($field, $key, $args, $value)
 
 /*
 	Ustawienie domyślnego adres e-mail
-*/
+
 function checkout_field_validator_enforce_default_email()
 {
 	if (empty($_POST['billing_email'])) {
@@ -97,7 +97,7 @@ add_action('woocommerce_checkout_process', 'checkout_field_validator_enforce_def
 
 /*
 	Strona Ustawień
-*/
+
 function checkout_field_validator_register_settings()
 {
 	add_option('checkout_field_validator_default_email', 'example@example.com');
@@ -132,4 +132,4 @@ function checkout_field_validator_field_cb()
 	$email = get_option('checkout_field_validator_default_email');
 	echo "<input type='email' required='required' name='checkout_field_validator_default_email' value='" . esc_attr($email) . "' />";
 }
-
+*/
